@@ -9,6 +9,9 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
+import Personal from "./components/Personal";
+import Diognoz from "./components/Diognoz";
+import Resault from "./components/Resault";
 
 ChartJS.register(
   LineElement,
@@ -63,7 +66,7 @@ const InfoField: React.FC<{ label: string; value: string }> = ({
 
 const PersonalInfoCard: React.FC<{ info: PersonalInfo }> = ({ info }) => (
   <div className="p-8">
-    <div className="md:flex">
+    <div className="md:flex md:space-x-8">
       <div className="md:flex-shrink-0">
         <img
           src={info.imageUrl}
@@ -72,7 +75,7 @@ const PersonalInfoCard: React.FC<{ info: PersonalInfo }> = ({ info }) => (
         />
       </div>
 
-      <div className="mt-6 md:mt-0 md:ml-8 flex-grow">
+      <div className="mt-6 md:mt-0 flex-grow">
         <h1 className="text-3xl font-bold text-gray-900">
           {info.firstName} {info.lastName}
         </h1>
@@ -141,7 +144,7 @@ const App: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className=" bg-gray-100 flex items-center justify-center">
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto"></div>
           <p className="mt-4 text-gray-600">Юкланмоқда...</p>
@@ -152,22 +155,18 @@ const App: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
+      <div className=" bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 ">
           <p className="text-red-500">{error}</p>
         </div>
       </div>
     );
   }
 
-  if (!personalInfo || !knowlodgeData) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <PersonalInfoCard info={personalInfo} />
+    <div className=" bg-gray-100 ">
+      <div className="max-w-6xl mx-auto bg-white ">
+        <PersonalInfoCard info={personalInfo!} />
 
         <div className="p-8 bg-gray-50">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -175,7 +174,7 @@ const App: React.FC = () => {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {knowlodgeData.semicharts.map((chart, index) => (
+            {knowlodgeData!.semicharts.map((chart, index) => (
               <div key={index} className="flex flex-col items-start">
                 <h3 className="text-sm font-medium text-gray-500">
                   {chart.label}
@@ -200,11 +199,11 @@ const App: React.FC = () => {
             <h3 className="text-lg font-medium text-gray-700 mb-4">Динамика</h3>
             <Line
               data={{
-                labels: knowlodgeData.lineChart.labels,
+                labels: knowlodgeData!.lineChart.labels,
                 datasets: [
                   {
                     label: "Баллар",
-                    data: knowlodgeData.lineChart.data,
+                    data: knowlodgeData!.lineChart.data,
                     fill: false,
                     borderColor: "#4CAF50",
                     tension: 0.3,
@@ -237,14 +236,17 @@ const App: React.FC = () => {
 
           <div className="mt-8">
             <h2 className="text-xl font-bold">
-              Умумий натижа: {knowlodgeData.overall}
+              Умумий натижа: {knowlodgeData!.overall}
             </h2>
             <p className="text-gray-600">
-              {knowlodgeData.thanOthers}% иштирокчилардан яхшироқ натижа
+              {knowlodgeData!.thanOthers}% иштирокчилардан яхшироқ натижа
             </p>
           </div>
         </div>
       </div>
+      <Personal />
+      <Diognoz />
+      <Resault />
     </div>
   );
 };
